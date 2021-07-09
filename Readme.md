@@ -17,4 +17,10 @@ deno install -A -f -n servers https://raw.githubusercontent.com/minioin/utils-ts
 # Wrapper for gradle wrapper
 deno install -A -f -n gw https://raw.githubusercontent.com/minioin/utils-ts/release/bin/gw.ts
 
+# Getpocket client
+deno install -A -f -n getpocket https://raw.githubusercontent.com/minioin/utils-ts/release/bin/getpocket.ts
 ```
+
+## License
+
+MIT
