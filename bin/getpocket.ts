@@ -1,6 +1,6 @@
-import GetPocket, { GetResponse } from "../lib/getpocket.ts";
-import Denomander from "https://deno.land/x/denomander/mod.ts";
-import { opn } from "https://denopkg.com/hashrock/deno-opn/opn.ts";
+import Denomander from "denomander";
+import { opn } from "opn";
+import GetPocket, { GetResponse } from "/lib/getpocket.ts";
 
 const consumer_key = Deno.env.get("POCKET_CONSUMER_KEY") || "";
 const access_token = Deno.env.get("POCKET_ACCESS_TOKEN") || "";

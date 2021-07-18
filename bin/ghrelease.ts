@@ -1,6 +1,6 @@
-import { download } from "https://deno.land/x/download/mod.ts";
-import { emptyDir, ensureDir } from "https://deno.land/std/fs/mod.ts";
-import Fuse from "https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.esm.js";
+import { download } from "download";
+import { emptyDir, ensureDir } from "fs/mod.ts";
+import Fuse from "fuse";
 
 const home = Deno.env.get("HOME");
 

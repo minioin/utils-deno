@@ -1,6 +1,6 @@
-import { parse as parseCsv } from "https://deno.land/std/encoding/csv.ts";
-import Denomander from "https://deno.land/x/denomander/mod.ts";
-import { exec, OutputMode } from "https://deno.land/x/exec/mod.ts";
+import { parse as parseCsv } from "encoding/csv.ts";
+import Denomander from "denomander";
+import { exec, OutputMode } from "exec";
 
 const sshConfig =
   "-o StrictHostKeyChecking=no -o BatchMode=yes -o ConnectTimeout=5";

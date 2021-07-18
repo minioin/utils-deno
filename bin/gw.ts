@@ -1,10 +1,4 @@
-import {
-  dirname,
-  join,
-  normalize,
-  parse,
-  resolve,
-} from "https://deno.land/std@0.99.0/path/mod.ts";
+import { dirname, join, normalize, parse, resolve } from "path/mod.ts";
 
 const GRADLEW = "gradlew";
 
