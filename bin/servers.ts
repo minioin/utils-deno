@@ -1,6 +1,7 @@
 import { parse as parseCsv } from "encoding/csv.ts";
 import Denomander from "denomander";
 import { exec, OutputMode } from "exec";
+import { fromCSV } from "/lib/config.ts";
 
 const sshConfig =
   "-o StrictHostKeyChecking=no -o BatchMode=yes -o ConnectTimeout=5";
@@ -14,46 +15,50 @@ const program = new Denomander({
 program
   .command("copy-id", "Copy your ssh id")
   .option("-i --identity", "Identity")
-  .option("-s --serversFile", "Servers list", undefined, "servers.csv")
+  .option("-s --serversFile", "Servers list", undefined, "hosts.csv")
   .command("status", "Check status")
   .action(async () => {
-    const servers = await getServers(program.serversFile);
-    servers.forEach(async ({ name, ipaddress }: ServerConfig) => {
+    const servers = await fromCSV(program.serversFile) as ServerConfig[];
+    servers.forEach(async ({ name, ip }: ServerConfig) => {
       const res = await exec(`ssh ${sshConfig} ${name} 'true'`, {
         output: OutputMode.Capture,
       });
-      statusLine({ code: res.status.code, name: name ?? ipaddress });
+      statusLine({ code: res.status.code, name: name ?? ip });
     });
   })
   .command("ssh [cmd?]", "Run SSH commands")
   .action(async () => {
-    const servers = await getServers(program.serversFile);
-    servers.forEach(async ({ name, ipaddress }: ServerConfig) => {
+    const servers = await fromCSV(program.serversFile) as ServerConfig[];
+    servers.forEach(async ({ name, ip }: ServerConfig) => {
       const res = await exec(`ssh ${sshConfig} ${name} ${program.cmd}`, {
         output: OutputMode.Capture,
       });
       statusLine({
         code: res.status.code,
-        name: name ?? ipaddress,
+        name: name ?? ip,
         output: res.output,
       });
     });
   })
   .command("ssh-config", "Generate SSH configuration file")
+  .option("-s --serversFile", "Servers list", undefined, "hosts.csv")
   .option("-o --output", "Output file")
   .action(async () => {
-    const servers = await getServers(program.serversFile);
-    servers.forEach(({ name, user, ipaddress, port }: ServerConfig) => {
-      // TODO: Redirect output to file if option provided
-      console.log(
-        `Host ${name}\n\tHostname ${ipaddress}\n\tPort ${port}\n\tUser ${user}\n`,
-      );
-    });
+    const servers = await fromCSV(program.serversFile) as ServerConfig[];
+    servers.forEach(
+      ({ name, user = "root", ip, port = 22 }: ServerConfig) => {
+        // TODO: Redirect output to file if option provided
+        console.log(
+          `Host ${name}\n\tHostName ${ip}\n\tPort ${port}\n\tUser ${user}\n`,
+        );
+      },
+    );
   })
   .command("copy-id", "Add a ssh id to remote server")
+  .option("-s --serversFile", "Servers list", undefined, "hosts.csv")
   .action(async () => {
-    const servers = await getServers(program.serversFile);
-    servers.forEach(async ({ name, password, ipaddress }: ServerConfig) => {
+    const servers = await fromCSV(program.serversFile) as ServerConfig[];
+    servers.forEach(async ({ name, password, ip }: ServerConfig) => {
       const res = await exec(
         `sshpass -p '${password}' ssh-copy-id ${sshConfig} ${name}`,
         {
@@ -62,7 +67,7 @@ program
       );
       statusLine({
         code: res.status.code,
-        name: name ?? ipaddress,
+        name: name ?? ip,
         message: res.status.code ? "failure" : "success",
       });
     });
@@ -71,31 +76,23 @@ program
     "copy-authority [publicKeyfile]",
     "Add a ssh authority to remote server",
   )
+  .option("-s --serversFile", "Servers list", undefined, "hosts.csv")
   .action(async ({ publicKeyfile = "servers.csv" }: ProgramConfig) => {
     const publicKey = await Deno.readTextFile(publicKeyfile);
-    const servers = await getServers(program.serversFile);
-    servers.forEach(async ({ name, ipaddress }: ServerConfig) => {
+    const servers = await fromCSV(program.serversFile) as ServerConfig[];
+    servers.forEach(async ({ name, ip }: ServerConfig) => {
       const res = await exec(
         `ssh ${sshConfig} ${name} 'echo "cert-authority ${publicKey}" >> .ssh/authorized_keys '`,
         { output: OutputMode.Capture },
       );
       statusLine({
         code: res.status.code,
-        name: name ?? ipaddress,
+        name: name ?? ip,
         output: res.output,
       });
     });
   })
   .parse(Deno.args);
-
-async function getServers(file: string): Promise<ServerConfig[]> {
-  const rawText = await Deno.readTextFile(file);
-  const content = await parseCsv(rawText, {
-    separator: ",",
-    skipFirstRow: true,
-  });
-  return content as ServerConfig[];
-}
 
 function statusLine({ code, name, message = "", output = "" }: StatusInput) {
   console.log(
@@ -119,7 +116,7 @@ interface ProgramConfig {
 
 interface ServerConfig {
   name?: string;
-  ipaddress: string;
+  ip: string;
   port?: number;
   user?: string;
   password?: string;
