@@ -1,6 +1,5 @@
 // KV implemented using appendonly log
 
-import { readLines } from "https://deno.land/std@0.79.0/io/bufio.ts";
 import {
   ensureFile,
   exists,
@@ -50,7 +49,7 @@ export class KV {
       if (compact) {
         this._compactFile();
       }
-    } catch (e) {
+    } catch (_e) {
       // Ignore
     }
     if (lockExists) {

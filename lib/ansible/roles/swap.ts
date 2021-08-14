@@ -1,6 +1,6 @@
 import { Role } from "../role.ts";
 import { command } from "../tasks/command.ts";
-import { lineinfile, removeInFile } from "../tasks/lineinfile.ts";
+import { lineinfile, removeInFile } from "../tasks/replace.ts";
 import { sysctl } from "../tasks/sysctl.ts";
 
 export function createSwap(name: string, file = "/swapfile") {
@@ -17,8 +17,10 @@ export function createSwap(name: string, file = "/swapfile") {
       "present",
     ),
     command("swapon", "swapon -a"),
-    sysctl("vm.vfs_cache_pressure", "50"),
-    sysctl("vm.swappiness", "1"),
+    sysctl({
+      "vm.vfs_cache_pressure": "50",
+      "vm.swappiness": "1",
+    }),
   ]);
 }
 

@@ -1,50 +1,76 @@
+import { block, serial } from "../lib/ansible/block.ts";
+import { playbook } from "../lib/ansible/playbook.ts";
+import { setBuildDir } from "../lib/ansible/mod.ts";
+import { configureSSH } from "../lib/ansible/roles/ssh.ts";
+import { createSwap, deleteSwap } from "../lib/ansible/roles/swap.ts";
+import { ufwConfig } from "../lib/ansible/roles/ufw.ts";
+import systemRoles from "../lib/ansible/roles/system.ts";
+import containerRoles from "../lib/ansible/roles/containers.ts";
 import {
-  apt,
-  command,
-  dnf,
-  enableService,
-  playbook,
-  reboot,
-  startService,
-  task,
-  waitForConnection,
-} from "../lib/ansible.ts";
+  sudoNoPassword,
+  sudoNoPasswordGroup,
+} from "../lib/ansible/roles/user.ts";
 
-// Tasks
-playbook("qemu-guest-agent-install", [
-  task("install-agent", "*", [
-    apt("qemu-guest-agent", "present"),
-    dnf("qemu-guest-agent", "present"),
-  ]),
-  task("start and enable servie", "*", [
-    enableService("qemu-guest-agent"),
-    startService("qemu-guest-agent"),
-  ]),
-]);
+setBuildDir("build/playbooks");
 
-playbook("docker-install", [
-  task("docker-install-all", "*", [
-    command("docker-install", "curl -fsSL https://get.docker.com | sh - "),
-    enableService("docker"),
-    startService("docker"),
+systemRoles();
+containerRoles();
+createSwap("mkswap", "/swapfile").build();
+deleteSwap("delswap", "/swapfile").build();
+configureSSH().build();
+sudoNoPassword("root").build();
+sudoNoPasswordGroup("sudo").build();
+ufwConfig("ufw-config").build();
+
+const play = (
+  name: string,
+  hosts: string,
+  roles: Array<string>,
+  become = false,
+) =>
+  block(`${name}: ${hosts}`).hosts(hosts).become(become).roles(roles)
+    .build();
+
+const playAll = (name: string, roles: Array<string>, become = false) =>
+  play(name, "all", roles, become);
+
+const playSerially = (
+  name: string,
+  hosts: string,
+  roles: Array<string>,
+  become = false,
+) =>
+  serial(`Serial ${name}: ${hosts}`).hosts(hosts).become(become).roles(roles)
+    .build();
+
+// Playbooks
+playbook("reboot-serially").tasks([
+  playSerially("reboot", "all", ["system-reboot"], true),
+]).build();
+
+playbook("reboot", [
+  playAll("reboot", ["system-reboot"], true),
+]).build();
+
+playbook("nopasswd", [
+  playAll("update", ["nopasswd-sudo", "nopasswd-root"], true),
+]).build();
+
+playbook("system-upgrade", [
+  playAll("upgrade", ["system-upgrade"], true),
+]).build();
+
+playbook("system-distupgrade", [
+  playAll("update", [
+    "system-upgrade",
+    "system-change-release",
+    "system-update",
   ], true),
-]);
-
-playbook("rancher-install", [
-  task("rancher-install-all", "*", [
-    command("rancher-install", "curl -sfL https://get.rancher.io | sh - "),
-  ]),
-]);
-
-playbook("rancher-uninstall", [
-  task("rancher-uninstall", "*", [
-    command("rancher-uninstall", "rancherd-uninstall.sh"),
-  ]),
-]);
-
-playbook("reboot-all", [
-  task("reboot", "*", [
-    reboot(1, 0, true),
-    waitForConnection(),
-  ]),
-]);
+  playAll("upgrade", [
+    "system-upgrade",
+  ], true),
+  playSerially("reboot", "all", ["system-reboot-if-needed"], true),
+]).vars({
+  "old_release": "buster",
+  "new_release": "bullseye",
+}).build();

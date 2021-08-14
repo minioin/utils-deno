@@ -31,8 +31,8 @@ async function install(repo: string) {
   const apiUrl = `https://api.github.com/repos/${repo}/releases/latest`;
   const res = await fetch(apiUrl);
   const json = await res.json();
-  let filtered = json?.assets; //.filter(filterArch)?.filter(filterOS);
-  let names = json?.assets?.map(mapName);
+  const filtered = json?.assets; //.filter(filterArch)?.filter(filterOS);
+  const names = json?.assets?.map(mapName);
   console.info("found versions:", names);
 
   const fuzzy = new Fuse(names, { threshold: 1.0 });
@@ -99,7 +99,7 @@ interface Asset {
   id: string;
   url: string;
   name: string;
-  content_type: string;
+  "content_type": string;
   size: number;
-  browser_download_url: string;
+  "browser_download_url": string;
 }

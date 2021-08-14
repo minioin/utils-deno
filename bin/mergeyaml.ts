@@ -1,7 +1,7 @@
 import { parse, stringify } from "encoding/yaml.ts";
 import { ld as _ } from "lodash";
 
-function mergeArrays(objValue: any, srcValue: any) {
+function mergeArrays(objValue: unknown, srcValue: unknown) {
   if (_.isArray(objValue)) {
     return objValue.concat(srcValue);
   }

@@ -2,7 +2,7 @@ export * from "./apt.ts";
 export * from "./command.ts";
 export * from "./dnf.ts";
 export * from "./fetch.ts";
-export * from "./lineinfile.ts";
+export * from "./replace.ts";
 export * from "./localaction.ts";
 export * from "./log.ts";
 export * from "./reboot.ts";

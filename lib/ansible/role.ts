@@ -1,4 +1,5 @@
 import { writeMainYaml } from "./utils.ts";
+import { buildDir } from "./mod.ts";
 
 export function role(
   name: string,
@@ -26,7 +27,7 @@ export class Role {
     return this;
   }
 
-  async build(dir = "playbooks") {
+  async build(dir = buildDir) {
     dir = `${dir}/roles/${this.name}`;
     await writeMainYaml(dir + "/meta", {
       "galaxy_info": { author: "" },

@@ -1,5 +1,6 @@
 import { Role } from "../role.ts";
 import { command } from "../tasks/command.ts";
+import { buildRoles } from "./mod.ts";
 
 export function dockerInstall() {
   return new Role("docker-install").tasks([
@@ -17,4 +18,12 @@ export function rancherUninstall() {
   return new Role("rancher-uninstall").tasks([
     command("uninstall", `rancherd-uninstall.sh`),
   ]);
+}
+
+export default function (buildDir?: string) {
+  buildRoles([
+    dockerInstall(),
+    rancherInstall(),
+    rancherUninstall(),
+  ], buildDir);
 }

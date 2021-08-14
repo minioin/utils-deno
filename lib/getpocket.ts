@@ -2,9 +2,9 @@ const ROOT_URL = "https://getpocket.com";
 const ADD_URL = "/v3/add";
 const SEND_URL = "/v3/send";
 const GET_URL = "/v3/get";
-const OAUTH_REQUEST_URL = "/v3/oauth/request";
-const OAUTH_TOKEN_URL = "/auth/authorize";
-const OAUTH_ACCESS_URL = "/v3/oauth/authorize";
+// const OAUTH_REQUEST_URL = "/v3/oauth/request";
+// const OAUTH_TOKEN_URL = "/auth/authorize";
+// const OAUTH_ACCESS_URL = "/v3/oauth/authorize";
 
 const headers = {
   "Content-Type": "application/json; charset=UTF-8",
@@ -29,44 +29,44 @@ export interface GetResponse {
   status: number;
   complete: number;
   error: string;
-  search_meta: SearchMeta;
+  "search_meta": SearchMeta;
   since: number;
   list: Array<NewsItem>;
 }
 
 interface SearchMeta {
-  search_type: "normal" | string;
+  "search_type": "normal" | string;
 }
 
 export interface NewsItem {
-  item_id: string;
-  resolved_id: string;
-  given_url: string;
-  given_title: string;
+  "item_id": string;
+  "resolved_id": string;
+  "given_url": string;
+  "given_title": string;
   favorite: "0" | "1";
   status: "0" | "1" | "2";
-  time_added: string;
-  time_updated: string;
-  time_read: string;
-  time_favorited: string;
-  sort_id: number;
-  resolved_title: string;
-  resolved_url: string;
+  "time_added": string;
+  "time_updated": string;
+  "time_read": string;
+  "time_favorited": string;
+  "sort_id": number;
+  "resolved_title": string;
+  "resolved_url": string;
   excerpt: string;
-  is_article: "0" | "1";
-  is_index: "0" | "1";
-  has_video: "0" | "1" | "2";
-  has_image: "0" | "1" | "2";
-  word_count: string;
+  "is_article": "0" | "1";
+  "is_index": "0" | "1";
+  "has_video": "0" | "1" | "2";
+  "has_image": "0" | "1" | "2";
+  "word_count": string;
   lang: string;
-  amp_url: string;
-  top_image_url: string;
-  domain_metadata: {
+  "amp_url": string;
+  "top_image_url": string;
+  "domain_metadata": {
     name: string;
     logo: string;
-    greyscale_logo: string;
+    "greyscale_logo": string;
   };
-  listen_duration_estimate: number;
+  "listen_duration_estimate": number;
 }
 
 type ModifyAction =
@@ -87,47 +87,47 @@ export interface ModifyRequest {
 
   // Url should only be used when item_id is not available.
   url?: string;
-  item_id?: number;
+  "item_id"?: number;
   time?: string;
   tags?: string;
 
   // to rename tags
-  old_tag?: string;
-  new_tag?: string;
+  "old_tag"?: string;
+  "new_tag"?: string;
 }
 
 export interface AddItem {
   url: string;
   title?: string;
   tags?: string;
-  tweet_id?: string;
+  "tweet_id"?: string;
 }
 
 export interface ModifyResponse {
   status: "0" | "1";
-  action_results: [boolean];
+  "action_results": [boolean];
 }
 
 export default class GetPocket {
   consumer_key: string;
   access_token: string | null;
-  constructor(consumer_key: string, access_token: string | null) {
-    this.consumer_key = consumer_key;
-    this.access_token = access_token;
+  constructor(consumerKey: string, accessToken: string | null) {
+    this.consumer_key = consumerKey;
+    this.access_token = accessToken;
   }
 
-  async get(options: GetOptions = {}): Promise<GetResponse> {
-    return this._get(ROOT_URL + GET_URL, options);
+  get(options: GetOptions = {}): Promise<GetResponse> {
+    return this._get(ROOT_URL + GET_URL, options as Record<string, unknown>);
   }
 
   // Send  non-homogeneous request
-  async modify(options: Array<ModifyRequest>): Promise<ModifyResponse> {
+  modify(options: Array<ModifyRequest>): Promise<ModifyResponse> {
     return this._send(ROOT_URL + SEND_URL, options);
   }
 
   // Send homogeneous request
-  async _modify(
-    action: ModifyAction,
+  _modify(
+    _action: ModifyAction,
     options: Array<ModifyRequest>,
   ): Promise<ModifyResponse> {
     options = options.map((request) => ({
@@ -137,19 +137,19 @@ export default class GetPocket {
     return this.modify(options);
   }
 
-  async archive(options: Array<ModifyRequest>): Promise<ModifyResponse> {
+  archive(options: Array<ModifyRequest>): Promise<ModifyResponse> {
     return this._modify("archive", options);
   }
 
-  async add(options: Array<ModifyRequest>): Promise<ModifyResponse> {
+  add(options: Array<ModifyRequest>): Promise<ModifyResponse> {
     return this._modify("add", options);
   }
 
-  async addOne(url: string) {
+  addOne(url: string) {
     return this._get(ROOT_URL + ADD_URL, { url });
   }
 
-  async _get(url: string, options: object) {
+  async _get(url: string, options: Record<string, unknown>) {
     const res = await fetch(url, {
       method: "POST",
       headers,
@@ -164,7 +164,7 @@ export default class GetPocket {
     }
     return res.json();
   }
-  async _send(_url: string, actions: object) {
+  async _send(_url: string, actions: unknown) {
     const url = ROOT_URL + SEND_URL +
       `?actions=${
         encodeURIComponent(JSON.stringify(actions))
@@ -173,7 +173,7 @@ export default class GetPocket {
     if (res.status !== 200) {
       throw new Error("Error " + res.status);
     }
-    let json = await res.json();
+    const json = await res.json();
     if (json.status !== 1) {
       throw Error("Error: " + json.action_results);
     }

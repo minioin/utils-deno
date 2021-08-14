@@ -82,3 +82,19 @@ export class Block {
     });
   }
 }
+
+export function block(name: string) {
+  return new Block(name);
+}
+
+export function serial(name: string, serial = 1) {
+  return new Block(name).serial(serial);
+}
+
+export function all(name: string) {
+  return new Block(name).hosts("all");
+}
+
+export function playAllSerially(name: string, serial = 1) {
+  return new Block(name).serial(serial).hosts("all");
+}

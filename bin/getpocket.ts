@@ -2,10 +2,10 @@ import Denomander from "denomander";
 import { opn } from "opn";
 import GetPocket, { GetResponse } from "/lib/getpocket.ts";
 
-const consumer_key = Deno.env.get("POCKET_CONSUMER_KEY") || "";
-const access_token = Deno.env.get("POCKET_ACCESS_TOKEN") || "";
+const consumerKey = Deno.env.get("POCKET_CONSUMER_KEY") || "";
+const accessToken = Deno.env.get("POCKET_ACCESS_TOKEN") || "";
 
-if (consumer_key === "" || access_token === "") {
+if (consumerKey === "" || accessToken === "") {
   console.error("Couldn't find POCKET_CONSUMER_KEY or POCKET_ACCESS_TOKEN.");
 }
 
@@ -61,14 +61,14 @@ interface ProgramOptions {
   archive: boolean;
 }
 async function get(offset: number, count: number, options: ProgramOptions) {
-  let pocket = new GetPocket(consumer_key, access_token);
+  const pocket = new GetPocket(consumerKey, accessToken);
   try {
     const res: GetResponse = await pocket.get({ count, offset });
     const { open, view, archive } = options;
 
     if (view || !(open || archive)) {
       const list = res.list;
-      for (let key in res.list) {
+      for (const key in res.list) {
         console.log(
           `${key}|${list[key].resolved_title}|${list[key].resolved_url}`,
         );
@@ -76,19 +76,19 @@ async function get(offset: number, count: number, options: ProgramOptions) {
     }
 
     if (open) {
-      let promises = [];
-      for (let key in res.list) {
+      const promises = [];
+      for (const key in res.list) {
         promises.push(opn(res.list[key].resolved_url));
       }
       await Promise.all(promises);
     }
 
     if (archive) {
-      let items = [];
-      for (let key in res.list) {
+      const items = [];
+      for (const key in res.list) {
         items.push({ item_id: Number.parseInt(res.list[key].item_id) });
       }
-      let resa = await pocket.archive(items);
+      const _resa = await pocket.archive(items);
     }
   } catch (e) {
     console.error(e.message);

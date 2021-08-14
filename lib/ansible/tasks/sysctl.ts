@@ -1,9 +1,14 @@
-export const sysctl = (name: string, value: string) => {
+interface Sysctl {
+  [name: string]: string;
+}
+
+export function sysctl(input: Sysctl, reload: "yes" | "no" = "yes") {
+  const sysctl = Object.entries(input).map(([name, value]) => {
+    return { name, value };
+  });
   return {
-    name: `[sysctl] ${name}=${value}`,
-    sysctl: {
-      name,
-      value,
-    },
+    name: `[sysctl] Set values`,
+    sysctl,
+    reload,
   };
-};
+}

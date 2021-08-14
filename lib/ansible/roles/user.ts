@@ -1,5 +1,5 @@
 import { Role } from "../role.ts";
-import { lineinfile } from "../tasks/lineinfile.ts";
+import { lineinfile } from "../tasks/replace.ts";
 
 export function sudoNoPassword(user = "root") {
   const nuser = `{{ user | default('${user}') }}`;
@@ -10,6 +10,7 @@ export function sudoNoPassword(user = "root") {
       `^${nuser}`,
       `${nuser} ALL=(ALL) NOPASSWD: ALL`,
       "present",
+      "visudo -cf %s",
     ),
   ]);
 }

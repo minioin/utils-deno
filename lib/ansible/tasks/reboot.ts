@@ -1,9 +1,18 @@
-export function reboot(async?: number, poll?: number, ignoreErrors = false) {
+import { debian } from "./system.ts";
+
+export function reboot() {
   return {
-    name: "Rebooting now",
-    shell: "shutdown -r now",
-    async,
-    poll,
-    "ignore_errors": ignoreErrors,
+    name: "Rebooting",
+    reboot: {},
   };
+}
+
+export function rebootRequiredDebian(variable = "reboot_required_file") {
+  return debian({
+    name: "Check if reboot is required",
+    stat: {
+      path: "/var/run/reboot-required",
+    },
+    register: variable,
+  });
 }

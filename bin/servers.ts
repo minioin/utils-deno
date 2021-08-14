@@ -1,4 +1,3 @@
-import { parse as parseCsv } from "encoding/csv.ts";
 import Denomander from "denomander";
 import { exec, OutputMode } from "exec";
 import { fromCSV } from "/lib/config.ts";
