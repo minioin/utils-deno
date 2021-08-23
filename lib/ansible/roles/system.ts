@@ -8,9 +8,7 @@ import {
   upgrade,
 } from "../tasks/apt.ts";
 import { reboot, rebootRequiredDebian } from "../tasks/reboot.ts";
-import { lineinfile } from "../tasks/replace.ts";
 import { when } from "../tasks/utils.ts";
-import { debian } from "../tasks/system.ts";
 import { waitForConnection } from "../tasks/wait.ts";
 
 export function systemUpgrade() {
@@ -55,20 +53,7 @@ export function rebootIfNeeded() {
 export function changeSystemRelease(old: string, newRelease: string) {
   return new Role("system-change-release").tasks([
     changeReleaseSource(old, newRelease),
-    debian(lineinfile(
-      "debian security",
-      "/etc/apt/sources.list",
-      "^deb http://security.debian.org/",
-      `deb http://deb.debian.org/debian-security ${newRelease}-security main contrib non-free`,
-      "present",
-    )),
-    debian(lineinfile(
-      "debian security",
-      "/etc/apt/sources.list",
-      "^deb-src http://security.debian.org/",
-      `deb-src http://deb.debian.org/debian-security ${newRelease}-security main contrib non-free`,
-      "present",
-    )),
+    changeReleaseSource(`${old}/updates`, `${newRelease}-security`),
   ]);
 }
 

@@ -6,3 +6,12 @@ export function debian(input: Record<string, unknown>) {
     when,
   };
 }
+
+export function hostname(name: string) {
+  return {
+    name: `Update hostname of {{ inventory_hostname }} to ${name}`,
+    hostname: {
+      name,
+    },
+  };
+}

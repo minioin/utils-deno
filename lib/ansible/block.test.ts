@@ -9,5 +9,7 @@ Deno.test("test task output", () => {
     tasks: [],
     throttle: undefined,
     serial: undefined,
+    handlers: undefined,
+    roles: undefined,
   }, new Block("hello").build());
 });
