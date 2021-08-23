@@ -36,3 +36,10 @@ export function cmd(cmd: string, silent = false) {
     }
   };
 }
+
+export const clean = run(
+  log("Cleaning build dirs"),
+  cmd("rm -rf build/ target/ dist/", true),
+  cmd("rm -rf cache/ .cache/", true),
+  cmd("rm -rf tmp/  **/*.pyc", true),
+);

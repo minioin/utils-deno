@@ -1,4 +1,5 @@
 import { cmd, run } from "./lib/taskutils.ts";
+export { clean } from "./lib/taskutils.ts";
 
 export const fmt = run(
   cmd("deno fmt ."),
@@ -10,10 +11,6 @@ export const lint = run(
 
 export const test = run(
   cmd("deno --unstable test"),
-);
-
-export const clean = run(
-  cmd(`rm -rf build/`),
 );
 
 export const roles = run(
