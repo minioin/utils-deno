@@ -12,7 +12,6 @@ import {
 } from "../lib/ansible/roles/user.ts";
 
 setBuildDir("build/playbooks");
-
 systemRoles();
 containerRoles();
 createSwap("mkswap", "/swapfile").build();
@@ -44,20 +43,8 @@ const playSerially = (
     .build();
 
 // Playbooks
-playbook("reboot-serially").tasks([
-  playSerially("reboot", "all", ["system-reboot"], true),
-]).build();
-
-playbook("reboot", [
-  playAll("reboot", ["system-reboot"], true),
-]).build();
-
 playbook("nopasswd", [
   playAll("update", ["nopasswd-sudo", "nopasswd-root"], true),
-]).build();
-
-playbook("system-upgrade", [
-  playAll("upgrade", ["system-upgrade"], true),
 ]).build();
 
 playbook("system-distupgrade", [
@@ -74,3 +61,30 @@ playbook("system-distupgrade", [
   "old_release": "buster",
   "new_release": "bullseye",
 }).build();
+
+playbook("system-upgrade", [
+  playAll("upgrade", [
+    "system-upgrade",
+    "system-reboot-if-needed",
+  ], true),
+]).build();
+
+playbook("system-reboot", [
+  playAll("reboot", [
+    "system-reboot",
+  ], true),
+]).build();
+
+playbook("system-upgrade-reboot", [
+  playAll("upgrade", [
+    "system-upgrade",
+    "system-reboot",
+  ], true),
+]).build();
+
+playbook("system-upgrade-reboot-serially").tasks([
+  playSerially("reboot", "all", [
+    "system-upgrade",
+    "system-reboot",
+  ], true),
+]).build();
