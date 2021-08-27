@@ -8,7 +8,7 @@ export function defer(fn: (...args: unknown[]) => unknown) {
   };
 }
 
-export function run(...args: (() => void)[]) {
+export function task(...args: (() => void)[]) {
   return async () => {
     for (const arg of args) {
       try {
@@ -54,7 +54,7 @@ export function cmd(cmd: string, silent = false, silentOnError = false) {
   };
 }
 
-export const clean = run(
+export const clean = task(
   cmd("rm -rf build/ target/ dist/", true, true),
   cmd("rm -rf cache/ .cache/", true, true),
   cmd("rm -rf tmp/  **/*.pyc", true, true),
