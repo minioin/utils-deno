@@ -1,4 +1,4 @@
-import { cmd, task } from "./lib/taskutils.ts";
+import { cmd, pipeline, task } from "./lib/taskutils.ts";
 export { clean } from "./lib/taskutils.ts";
 
 export const fmt = task(
@@ -17,7 +17,7 @@ export const roles = task(
   cmd("deno run --unstable -A examples/ansible.ts"),
 );
 
-export const build = task(
+export const build = pipeline(
   fmt,
   lint,
   test,

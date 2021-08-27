@@ -22,6 +22,21 @@ export function task(...args: (() => void)[]) {
   };
 }
 
+// Pipeline consists of one of more tasks. and as such does
+// not log the output itself.
+export function pipeline(...args: (() => void)[]) {
+  return async () => {
+    for (const arg of args) {
+      try {
+        await arg();
+      } catch (e) {
+        throw e;
+      }
+    }
+    return args;
+  };
+}
+
 export const log = defer((...args: unknown[]) => console.log(...args));
 export const kaf = (...files: string[]) => kf("apply", ...files);
 export const kdf = (...files: string[]) => kf("delete", ...files);
