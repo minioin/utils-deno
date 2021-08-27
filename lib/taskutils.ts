@@ -1,5 +1,5 @@
-import { $ } from "https://deno.land/x/deno_dx/mod.ts";
-
+import { $ } from "https://raw.githubusercontent.com/linux-china/dx/master/mod.ts";
+import { red, yellow } from "https://deno.land/std/fmt/colors.ts";
 export function defer(fn: (...args: unknown[]) => unknown) {
   return (...args: unknown[]) => {
     return () => {
@@ -23,16 +23,25 @@ export function run(...args: (() => void)[]) {
 }
 
 export const log = defer((...args: unknown[]) => console.log(...args));
-export const kaf = (file: string) => () => $`kubectl apply -f ${file}`;
-export const kdf = (file: string) => () => $`kubectl delete -f ${file}`;
+export const kaf = (...files: string[]) => kf("apply", ...files);
+export const kdf = (...files: string[]) => kf("delete", ...files);
+
+export function kf(action: "apply" | "delete", ...files: string[]) {
+  return () => $`kubectl ${action} -f ${files.join(" -f ")}`;
+}
 
 export function cmd(cmd: string, silent = false) {
-  return () => {
+  return async () => {
     try {
-      (silent || log(cmd)());
-      return $`${cmd}`;
+      (silent || log(yellow(`[Run]`), cmd)());
+      const res = await $`${cmd}`;
+      (silent || (res && log(res)()));
+      return res;
     } catch (e) {
-      console.error(`Error running: ${cmd}. ${JSON.stringify(e)}`);
+      console.error(
+        red(`[Error(${e.exitCode})]`),
+        `${cmd}. ${e.stderr}`,
+      );
     }
   };
 }
