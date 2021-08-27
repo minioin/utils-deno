@@ -27,7 +27,7 @@ export const kaf = (...files: string[]) => kf("apply", ...files);
 export const kdf = (...files: string[]) => kf("delete", ...files);
 
 export function kf(action: "apply" | "delete", ...files: string[]) {
-  return () => $`kubectl ${action} -f ${files.join(" -f ")}`;
+  return cmd(`kubectl ${action} -f ${files.join(" -f ")}`);
 }
 
 export function cmd(cmd: string, silent = false) {
