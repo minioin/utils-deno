@@ -14,8 +14,8 @@ export function run(...args: (() => void)[]) {
       try {
         await arg();
       } catch (e) {
-        console.error(`Error while running ${arg}`);
-        console.error(`Error: `, e);
+        console.error(red(`[Error]`), e.code, ":", e.message);
+        throw e;
       }
     }
     return args;
@@ -30,7 +30,7 @@ export function kf(action: "apply" | "delete", ...files: string[]) {
   return cmd(`kubectl ${action} -f ${files.join(" -f ")}`);
 }
 
-export function cmd(cmd: string, silent = false) {
+export function cmd(cmd: string, silent = false, silentOnError = false) {
   return async () => {
     try {
       (silent || log(yellow(`[Run]`), cmd)());
@@ -38,17 +38,18 @@ export function cmd(cmd: string, silent = false) {
       (silent || (res && log(res)()));
       return res;
     } catch (e) {
-      console.error(
-        red(`[Error(${e.exitCode})]`),
-        `${cmd}. ${e.stderr}`,
-      );
+      if (!silentOnError) {
+        throw {
+          code: e.exitCode,
+          message: e.stderr,
+        };
+      }
     }
   };
 }
 
 export const clean = run(
-  log("Cleaning build dirs"),
-  cmd("rm -rf build/ target/ dist/", true),
-  cmd("rm -rf cache/ .cache/", true),
-  cmd("rm -rf tmp/  **/*.pyc", true),
+  cmd("rm -rf build/ target/ dist/", true, true),
+  cmd("rm -rf cache/ .cache/", true, true),
+  cmd("rm -rf tmp/  **/*.pyc", true, true),
 );
