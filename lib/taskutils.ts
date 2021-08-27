@@ -25,6 +25,12 @@ export function run(...args: (() => void)[]) {
 export const log = defer((...args: unknown[]) => console.log(...args));
 export const kaf = (...files: string[]) => kf("apply", ...files);
 export const kdf = (...files: string[]) => kf("delete", ...files);
+export const kak = (...files: string[]) => kk("apply", ...files);
+export const kdk = (...files: string[]) => kk("delete", ...files);
+
+export function kk(action: "apply" | "delete", ...files: string[]) {
+  return cmd(`kubectl ${action} -k ${files.join(" -f ")}`);
+}
 
 export function kf(action: "apply" | "delete", ...files: string[]) {
   return cmd(`kubectl ${action} -f ${files.join(" -f ")}`);
