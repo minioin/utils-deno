@@ -1,20 +1,10 @@
-import { parse, stringify } from "encoding/yaml.ts";
-import { ld as _ } from "lodash";
+import { merge } from "/lib/mergeyaml.ts";
 
-function mergeArrays(objValue: unknown, srcValue: unknown) {
-  if (_.isArray(objValue)) {
-    return objValue.concat(srcValue);
-  }
-}
 async function main() {
-  const objs = await Promise.all(Deno.args.map(async (file) => {
-    const content = await Deno.readTextFile(file);
-    return parse(content);
-  }));
-
-  const result = {};
-  objs.forEach((obj) => _.mergeWith(result, obj, mergeArrays));
-  console.log(stringify(result));
+  const contents = await Promise.all(
+    Deno.args.map((file) => Deno.readTextFile(file)),
+  );
+  console.log(merge(...contents));
 }
 
 main();
