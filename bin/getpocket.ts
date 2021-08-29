@@ -1,6 +1,7 @@
 import Denomander from "denomander";
 import { opn } from "opn";
 import GetPocket, { GetResponse } from "/lib/getpocket.ts";
+import { link } from "stdx/cliffy/ansi/ansi_escapes.ts";
 
 const consumerKey = Deno.env.get("POCKET_CONSUMER_KEY") || "";
 const accessToken = Deno.env.get("POCKET_ACCESS_TOKEN") || "";
@@ -70,7 +71,8 @@ async function get(offset: number, count: number, options: ProgramOptions) {
       const list = res.list;
       for (const key in res.list) {
         console.log(
-          `${key}|${list[key].resolved_title}|${list[key].resolved_url}`,
+          link(key, "https://getpocket.com/read/" + key),
+          link(list[key].resolved_title.slice(0, 60), list[key].resolved_url),
         );
       }
     }
