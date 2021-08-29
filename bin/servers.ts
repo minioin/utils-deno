@@ -1,6 +1,8 @@
 import Denomander from "denomander";
 import { exec, OutputMode } from "exec";
 import { fromCSV } from "/lib/config.ts";
+import { isIP } from "https://deno.land/x/isIP/mod.ts";
+import { expand as expandGlob } from "/lib/glob.ts";
 
 const sshConfig =
   "-o StrictHostKeyChecking=no -o BatchMode=yes -o ConnectTimeout=5";
@@ -50,6 +52,27 @@ program
         console.log(
           `Host ${name}\n\tHostName ${ip}\n\tPort ${port}\n\tUser ${user}\n`,
         );
+      },
+    );
+  })
+  .command("hosts", "Generate SSH configuration file")
+  .option("-s --serversFile", "Servers list", undefined, "hosts.csv")
+  .action(async () => {
+    const servers = await fromCSV(program.serversFile) as ServerConfig[];
+    servers.forEach(
+      ({ name, ip, dns }: ServerConfig) => {
+        ip = ip.trim();
+        const version = isIP(ip);
+        if (version) {
+          const type = version === 4 ? "A" : "AAA";
+          dns = dns ?? name ?? "";
+          expandGlob(dns).forEach((entry) => {
+            console.log(type, entry, ip);
+          });
+        } else {
+          const type = "CNAME";
+          console.log(type, name, ip);
+        }
       },
     );
   })
@@ -119,4 +142,5 @@ interface ServerConfig {
   port?: number;
   user?: string;
   password?: string;
+  dns?: string;
 }
