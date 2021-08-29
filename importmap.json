@@ -13,7 +13,8 @@
     "path/": "https://deno.land/std/path/",
     "std/": "https://deno.land/std/",
     "stdx/": "https://deno.land/x/",
-    "esm/": "https://esm.sh/",
+    "esm.sh/": "https://esm.sh/",
+    "jspm.io/": "https://dev.jspm.io/",
     "github.com/": "https://raw.githubusercontent.com/"
   }
 }

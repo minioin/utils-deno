@@ -1,5 +1,5 @@
-import Denomander from "https://deno.land/x/denomander/mod.ts";
-import { apply, pattern, UPattern } from "../lib/getfeedurl.ts";
+import Denomander from "stdx/denomander/mod.ts";
+import { apply, pattern, UPattern } from "/lib/getfeedurl.ts";
 
 function gitHubUserFeed(p: UPattern) {
   return `https://github.com/${p.pathname.groups?.username}.atom`;
