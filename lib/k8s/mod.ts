@@ -5,6 +5,7 @@ import { ensureDir } from "https://deno.land/std/fs/mod.ts";
 
 export * from "./grafana.ts";
 export * from "./ingress-www-redirect.ts";
+export * from "./config.ts";
 
 export function merge(...objs: Array<unknown>) {
   const result = {};
