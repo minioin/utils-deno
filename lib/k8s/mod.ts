@@ -3,7 +3,8 @@ import { _mergeArrays } from "./utils.ts";
 import { join } from "https://deno.land/std/path/mod.ts";
 import { ensureDir } from "https://deno.land/std/fs/mod.ts";
 
-export { nginxRedirectToWWW } from "./ingress-www-redirect.ts";
+export * from "./grafana.ts";
+export * from "./ingress-www-redirect.ts";
 
 export function merge(...objs: Array<unknown>) {
   const result = {};
