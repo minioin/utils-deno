@@ -20,6 +20,22 @@ export function rancherUninstall() {
   ]);
 }
 
+export function rke2Install() {
+  return new Role("rancher-install").tasks([
+    command("install", pipeToSh(`https://get.rke2.io`)),
+  ]);
+}
+
+export function pipeToSh(url: string) {
+  return command(`bash -c 'curl -fsSL "${url}" | sh - '`);
+}
+
+export function rke2Uninstall() {
+  return new Role("rancher-uninstall").tasks([
+    command("uninstall", `rke2-uninstall.sh`),
+  ]);
+}
+
 export default function (buildDir?: string) {
   buildRoles([
     dockerInstall(),

@@ -3,6 +3,7 @@ export * from "./block.ts";
 export * from "./playbook.ts";
 export * from "./role.ts";
 export * from "./toyaml.ts";
+export * as roles from "./roles/mod.ts";
 
 export let buildDir = "playbooks";
 
