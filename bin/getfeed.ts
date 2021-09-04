@@ -1,5 +1,5 @@
-import Denomander from "stdx/denomander/mod.ts";
-import { apply, pattern, UPattern } from "/lib/getfeedurl.ts";
+import Denomander from "https://deno.land/x/denomander/mod.ts";
+import { apply, fetchParallel, pattern, UPattern } from "../lib/feed/mod.ts";
 
 function gitHubUserFeed(p: UPattern) {
   return `https://github.com/${p.pathname.groups?.username}.atom`;
@@ -25,12 +25,7 @@ const program = new Denomander({
 });
 
 program
-  .defaultCommand("[urls...]")
-  .option("-a --archive", "Archive those urls")
-  .option("-n --number", "Fetch n number of items", undefined, "10")
-  .option("-s --skip", "Skip first n items")
-  .option("-o --open", "Open those urls")
-  .option("-v --view", "View those urls on console.")
+  .command("url [urls...]")
   .action(() => {
     program["urls..."].forEach((url: string) => {
       try {
@@ -39,5 +34,11 @@ program
         console.error(e.message, url);
       }
     });
+  })
+  .command("fetch")
+  .action(async () => {
+    const url = apply("https://github.com/minioin") as string;
+    const feed = await fetchParallel([url], 10);
+    console.log(feed);
   })
   .parse(Deno.args);

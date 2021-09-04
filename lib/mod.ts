@@ -2,7 +2,7 @@ export * from "./fs.ts";
 export * from "./config.ts";
 export * from "./download.ts";
 export * from "./fs.ts";
-export * from "./getfeedurl.ts";
+export * from "./feed/mod.ts";
 export * from "./getpocket.ts";
 export * from "./glob.ts";
 export * from "./mergeyaml.ts";

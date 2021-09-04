@@ -4,13 +4,13 @@ import { buildRoles } from "./mod.ts";
 
 export function dockerInstall() {
   return new Role("docker-install").tasks([
-    command("install", `bash -c "curl -fsSL https://get.docker.com | sh - "`),
+    command("install", pipeToSh(`https://get.docker.io`)),
   ]);
 }
 
 export function rancherInstall() {
   return new Role("rancher-install").tasks([
-    command("install", `bash -c "curl -fsSL https://get.rancher.io | sh - "`),
+    command("install", pipeToSh(`https://get.rancher.io`)),
   ]);
 }
 
@@ -27,7 +27,7 @@ export function rke2Install() {
 }
 
 export function pipeToSh(url: string) {
-  return command(`bash -c 'curl -fsSL "${url}" | sh - '`);
+  return `bash -c 'curl -fsSL "${url}" | sh - '`;
 }
 
 export function rke2Uninstall() {
