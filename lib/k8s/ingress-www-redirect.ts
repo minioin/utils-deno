@@ -1,6 +1,5 @@
 import {
-  Ingress,
-  toIngress,
+  fromIngress,
 } from "https://deno.land/x/kubernetes_apis@v0.3.1/builtin/networking.k8s.io@v1/structs.ts";
 
 interface RedirectToWWWInput {
@@ -19,9 +18,9 @@ export function nginxRedirectToWWW(
     servicePort,
     name,
   }: RedirectToWWWInput,
-): Ingress {
+) {
   name = name ?? "redirect-to-www-" + hostname;
-  return toIngress({
+  return fromIngress({
     metadata: {
       name,
       annotations: {

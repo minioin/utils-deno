@@ -1,5 +1,6 @@
 import { walk } from "https://deno.land/std/fs/mod.ts";
 import { basename } from "https://deno.land/std/path/mod.ts";
+import * as CoreV1 from "https://deno.land/x/kubernetes_apis@v0.3.1/builtin/core@v1/structs.ts";
 
 export async function configDir(dir: string) {
   const files: Record<string, string> = {};
@@ -11,15 +12,24 @@ export async function configDir(dir: string) {
   return files;
 }
 
-export function configMap(name: string, data: Record<string, string>) {
-  return {
+export function configMap(
+  name: string,
+  data: Record<string, string>,
+  namespace = "default",
+) {
+  return CoreV1.fromConfigMap({
     apiVersion: "v1",
     kind: "ConfigMap",
     metadata: {
       name,
+      namespace,
     },
     data,
-  };
+  });
+}
+
+export async function configDirMap(name: string, dir: string) {
+  return configMap(name, await configDir(dir));
 }
 
 export function opaqueSecret(
@@ -27,16 +37,14 @@ export function opaqueSecret(
   data: Record<string, string>,
   namespace = "default",
 ) {
-  return {
-    apiVersion: "v1",
-    kind: "Secret",
+  return CoreV1.fromSecret({
     metadata: {
       name,
       namespace,
     },
     type: "Opaque",
     data,
-  };
+  });
 }
 
 export function opaqueSecretString(
@@ -44,14 +52,12 @@ export function opaqueSecretString(
   stringData: Record<string, string>,
   namespace = "default",
 ) {
-  return {
-    apiVersion: "v1",
-    kind: "Secret",
+  return CoreV1.fromSecret({
     metadata: {
       name,
       namespace,
     },
     type: "Opaque",
     stringData,
-  };
+  });
 }

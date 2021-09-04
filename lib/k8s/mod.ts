@@ -2,10 +2,12 @@ import { ld as _ } from "https://x.nest.land/deno-lodash@1.0.0/mod.ts";
 import { _mergeArrays } from "./utils.ts";
 import { join } from "https://deno.land/std/path/mod.ts";
 import { ensureDir } from "https://deno.land/std/fs/mod.ts";
+import { stringify } from "https://deno.land/std/encoding/yaml.ts";
 
 export * from "./grafana.ts";
 export * from "./ingress-www-redirect.ts";
 export * from "./config.ts";
+export * from "./pingjob.ts";
 
 export function merge(...objs: Array<unknown>) {
   const result = {};
@@ -13,6 +15,11 @@ export function merge(...objs: Array<unknown>) {
     _.mergeWith(result, obj as Record<string, unknown>, _mergeArrays)
   );
   return result;
+}
+
+export function render(...objs: Array<unknown>) {
+  return objs.map((value) => stringify(value as Record<string, unknown>))
+    .join("\n---\n");
 }
 
 interface MetadataName {
@@ -35,6 +42,6 @@ export function toFile(input: unknown, file?: string) {
   }
   return Deno.writeTextFile(
     file,
-    JSON.stringify(input, null, 2),
+    render(input),
   );
 }
