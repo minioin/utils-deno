@@ -22,7 +22,26 @@ interface FetchOptions {
   method?: string;
 }
 
-export class Client {
+export interface RestClient {
+  delete<B, T>(path: string): Promise<Result<ClientResponse<T>, ErrorMessage>>;
+
+  patch<B, T>(
+    body: B,
+    path: string,
+  ): Promise<Result<ClientResponse<T>, ErrorMessage>>;
+
+  post<B, T>(
+    body: B,
+    path: string,
+  ): Promise<Result<ClientResponse<T>, ErrorMessage>>;
+
+  get<T>(
+    path?: string,
+    options?: FetchOptions,
+  ): Promise<Result<ClientResponse<T>, ErrorMessage>>;
+}
+
+export class Client implements RestClient {
   baseUrl: string;
   _authorization?: string;
 
