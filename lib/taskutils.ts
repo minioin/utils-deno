@@ -69,7 +69,7 @@ export function cmd(cmd: string, silent = false, silentOnError = false) {
   };
 }
 
-function runIfExists(file: string, command: string, silent = true) {
+function ifFileExists(file: string, command: string, silent = true) {
   const silentArgs = " || exit 0";
   return cmd(
     `[ -f "${file}" ] && (${command}) ${silent ? silentArgs : ""}`,
@@ -79,53 +79,53 @@ function runIfExists(file: string, command: string, silent = true) {
 
 // TODO: Refactor dx to select following set of tasks automatically if no task file exists
 export const run = task(
-  runIfExists("Cargo.toml", "cargo run"),
-  runIfExists("package.json", "npm run start"),
+  ifFileExists("Cargo.toml", "cargo run"),
+  ifFileExists("package.json", "npm run start"),
   // TODO Use maven wrapper instead of mvn/gradle
-  runIfExists("build.gradle", "gradle run"),
-  runIfExists("pom.xml", "mvn run"),
-  runIfExists("Makefile", "make run"),
+  ifFileExists("build.gradle", "gradle run"),
+  ifFileExists("pom.xml", "mvn run"),
+  ifFileExists("Makefile", "make run"),
 );
 
 export const lint = task(
-  runIfExists("Cargo.toml", "cargo lint"),
-  runIfExists("package.json", "npm run lint"),
+  ifFileExists("Cargo.toml", "cargo lint"),
+  ifFileExists("package.json", "npm run lint"),
   // TODO Use maven wrapper instead of mvn/gradle
-  runIfExists("build.gradle", "gradle lint"),
-  runIfExists("pom.xml", "mvn lint"),
-  runIfExists("Makefile", "make lint"),
+  ifFileExists("build.gradle", "gradle lint"),
+  ifFileExists("pom.xml", "mvn lint"),
+  ifFileExists("Makefile", "make lint"),
 );
 
 // TODO: Refactor dx to select following set of tasks automatically if no task file exists
 export const format = task(
-  runIfExists("Cargo.toml", "cargo fmt"),
-  runIfExists("package.json", "npm run format || npm run fmt"),
-  runIfExists(
+  ifFileExists("Cargo.toml", "cargo fmt"),
+  ifFileExists("package.json", "npm run format || npm run fmt"),
+  ifFileExists(
     ".prettierrc.json",
     "npm run format || npm run fmt || prettier --write . || npx prettier --write .",
   ),
   // TODO Use maven wrapper instead of mvn
-  runIfExists("build.gradle", "gradle format"),
-  runIfExists("pom.xml", "mvn formatter:format"),
-  runIfExists("Makefile", "make format"),
+  ifFileExists("build.gradle", "gradle format"),
+  ifFileExists("pom.xml", "mvn formatter:format"),
+  ifFileExists("Makefile", "make format"),
 );
 
 export const test = task(
-  runIfExists("Cargo.toml", "cargo test"),
-  runIfExists("package.json", "npm run test"),
+  ifFileExists("Cargo.toml", "cargo test"),
+  ifFileExists("package.json", "npm run test"),
   // TODO Use maven wrapper instead of mvn
-  runIfExists("pom.xml", "mvn test"),
-  runIfExists("Makefile", "make test"),
-  runIfExists("build.gradle", "gradle test"),
+  ifFileExists("pom.xml", "mvn test"),
+  ifFileExists("Makefile", "make test"),
+  ifFileExists("build.gradle", "gradle test"),
 );
 
 export const build = task(
-  runIfExists("Cargo.toml", "cargo build"),
-  runIfExists("package.json", "npm run build"),
+  ifFileExists("Cargo.toml", "cargo build"),
+  ifFileExists("package.json", "npm run build"),
   // TODO Use maven wrapper instead of mvn
-  runIfExists("pom.xml", "mvn package"),
-  runIfExists("Makefile", "make build"),
-  runIfExists("build.gradle", "gradle build"),
+  ifFileExists("pom.xml", "mvn package"),
+  ifFileExists("Makefile", "make build"),
+  ifFileExists("build.gradle", "gradle build"),
 );
 
 export const clean = task(
@@ -134,4 +134,7 @@ export const clean = task(
   cmd("rm -rf tmp/  **/*.pyc", true, true),
 );
 
-export const prune = task(cmd("rm -rf node_modules", false, true));
+export const prune = pipeline(
+  clean,
+  task(cmd("rm -rf node_modules", false, true))
+);
