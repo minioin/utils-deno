@@ -47,8 +47,6 @@ export function rebootIfNeeded() {
 
 /**
  * deb http://deb.debian.org/debian-security bullseye-security main contrib non-free
-
-
  */
 export function changeSystemRelease(old: string, newRelease: string) {
   return new Role("system-change-release").tasks([

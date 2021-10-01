@@ -77,20 +77,20 @@ async function get(offset: number, count: number, options: ProgramOptions) {
       }
     }
 
-    if (open) {
-      const promises = [];
-      for (const key in res.list) {
-        promises.push(opn(res.list[key].resolved_url));
-      }
-      await Promise.all(promises);
-    }
-
     if (archive) {
       const items = [];
       for (const key in res.list) {
         items.push({ item_id: Number.parseInt(res.list[key].item_id) });
       }
       const _resa = await pocket.archive(items);
+    }
+
+    if (open) {
+      const promises = [];
+      for (const key in res.list) {
+        promises.push(opn(res.list[key].resolved_url));
+      }
+      await Promise.all(promises);
     }
   } catch (e) {
     console.error(e.message);
