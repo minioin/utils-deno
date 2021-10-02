@@ -136,5 +136,5 @@ export const clean = task(
 
 export const prune = pipeline(
   clean,
-  task(cmd("rm -rf node_modules", false, true))
+  task(cmd("rm -rf node_modules", false, true)),
 );

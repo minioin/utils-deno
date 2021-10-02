@@ -1,4 +1,4 @@
-import { URLPattern } from "https://dev.jspm.io/urlpattern-polyfill";
+// import { URLPattern } from "https://dev.jspm.io/urlpattern-polyfill";
 const knownPatterns: Array<PatternMatcher> = [];
 
 interface PatternMatcher {
@@ -6,12 +6,10 @@ interface PatternMatcher {
   fn: PatternMapper;
 }
 
-type PatternMapper = (p: UPattern) => string | { [key: string]: string };
-
-export interface UPattern {
-  input: string;
-  pathname: { input: string; groups: { [s: string]: string } };
-}
+type PatternMapper = (
+  p: URLPatternResult,
+  m: MatchResult,
+) => string | { [key: string]: string };
 
 function removeEndingSlash(input: string) {
   return input.endsWith("/") ? input.substring(0, input.length - 1) : input;
@@ -27,18 +25,23 @@ export function pattern(baseURL: string, pathname: string, fn: PatternMapper) {
   });
 }
 
-interface MatchResult {
-  match: UPattern;
+export interface MatchResult {
+  match: URLPatternResult;
   pattern: PatternMatcher;
+  url?: URL;
 }
 
 export function match(url: string): MatchResult | undefined {
+  const u = new URL(url);
   for (const pattern of knownPatterns) {
-    const match = pattern.pattern.exec(removeEndingSlash(url)) as UPattern;
+    const match = pattern.pattern.exec(
+      removeEndingSlash(u.origin + u.pathname),
+    );
     if (match) {
       return {
         pattern,
         match,
+        url: u,
       };
     }
   }
@@ -47,6 +50,6 @@ export function match(url: string): MatchResult | undefined {
 export function apply(url: string) {
   const m = match(url);
   if (m) {
-    return m.pattern.fn(m.match);
+    return m.pattern.fn(m.match, m);
   }
 }
