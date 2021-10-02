@@ -1,4 +1,3 @@
-// import { URLPattern } from "https://dev.jspm.io/urlpattern-polyfill";
 const knownPatterns: Array<PatternMatcher> = [];
 
 interface PatternMatcher {
