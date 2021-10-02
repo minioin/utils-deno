@@ -1,11 +1,11 @@
 import Denomander from "https://deno.land/x/denomander/mod.ts";
-import { apply, fetchParallel, pattern, UPattern } from "../lib/feed/mod.ts";
+import { apply, fetchParallel, MatchResult, pattern } from "../lib/feed/mod.ts";
 
-function gitHubUserFeed(p: UPattern) {
+function gitHubUserFeed(p: URLPatternResult) {
   return `https://github.com/${p.pathname.groups?.username}.atom`;
 }
 
-function gitHubRepoFeed(p: UPattern) {
+function gitHubRepoFeed(p: URLPatternResult) {
   const repo = `https://github.com/${p.pathname.groups?.username}/${p.pathname
     .groups?.repo}`;
   return {
@@ -15,8 +15,14 @@ function gitHubRepoFeed(p: UPattern) {
   };
 }
 
+function getHNUserfeed(p: URLPatternResult, m: MatchResult) {
+  const url = new URLSearchParams(m.url?.search || "");
+  return `https://hnrss.org/user?id=` + url?.get("id");
+}
+
 pattern("https://github.com", "/:username/:repo", gitHubRepoFeed);
 pattern("https://github.com", "/:username/", gitHubUserFeed);
+pattern("https://news.ycombinator.com", "/user", getHNUserfeed);
 
 const program = new Denomander({
   app_name: "getfeed",
