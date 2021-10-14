@@ -1,10 +1,7 @@
+import { assertEquals, assertThrows, test } from "./testing.ts";
 import { Err, Ok, Result } from "./result.ts";
-import {
-  assertEquals,
-  assertThrows,
-} from "https://deno.land/std/testing/asserts.ts";
 
-Deno.test("ok unwrap test", () => {
+test("ok unwrap test", () => {
   const ok: Result<string, string> = Ok("Ok");
   assertEquals(ok.isOk(), true);
   assertEquals(ok.isErr(), false);

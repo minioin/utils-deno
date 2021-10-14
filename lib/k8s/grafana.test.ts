@@ -9,7 +9,7 @@ Deno.test("dashboard test", () => {
       labels: {
         app: "grafana",
       },
-      name: "0--",
+      name: "0-",
       namespace: "grafana-operator",
     },
     spec: {

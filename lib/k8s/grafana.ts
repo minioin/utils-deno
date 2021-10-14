@@ -21,7 +21,7 @@ export function grafanaDashboard(dashboard: Record<string, unknown>) {
     (dashboard as { gnetId: number; uid: string; title: string });
   const sanitizedTitle = slugify(title?.replaceAll(SEP, "") ?? "")
     .toLowerCase();
-  const name = `${gnetId ?? uid}-${sanitizedTitle}`.toLowerCase();
+  const name = `${gnetId ?? uid ?? "0"}-${sanitizedTitle}`.toLowerCase();
   return {
     apiVersion: "integreatly.org/v1alpha1",
     kind: "GrafanaDashboard",

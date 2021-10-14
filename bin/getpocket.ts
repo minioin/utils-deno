@@ -1,6 +1,6 @@
 import Denomander from "denomander";
 import { opn } from "opn";
-import GetPocket, { GetResponse } from "/lib/getpocket.ts";
+import GetPocket, { GetResponse } from "@/lib/getpocket.ts";
 import { link } from "stdx/cliffy/ansi/ansi_escapes.ts";
 
 const consumerKey = Deno.env.get("POCKET_CONSUMER_KEY") || "";

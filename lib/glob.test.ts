@@ -1,11 +1,11 @@
 import { expandEach } from "./glob.ts";
-import { assertArrayIncludes } from "https://deno.land/std/testing/asserts.ts";
+import { assertArrayIncludes, test } from "./testing.ts";
 
-Deno.test("glob expansion", () => {
+test("glob expansion", () => {
   assertArrayIncludes(expandEach(".", ["a", "b"], ["b"]), ["a.b", "b.b"]);
 });
 
-Deno.test("double expansion", () => {
+test("double expansion", () => {
   assertArrayIncludes(expandEach(".", ["a", "b"], ["b", "c"]), [
     "a.b",
     "b.b",

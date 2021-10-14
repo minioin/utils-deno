@@ -9,3 +9,4 @@ export * from "./mergeyaml.ts";
 export * from "./restclient.ts";
 export * from "./result.ts";
 export * from "./taskutils.ts";
+export * as testing from "./testing.ts";

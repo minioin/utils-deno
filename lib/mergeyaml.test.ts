@@ -1,7 +1,7 @@
 import { merge } from "./mergeyaml.ts";
-import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+import { assertEquals, test } from "./testing.ts";
 
-Deno.test("merge test", () => {
+test("merge test", () => {
   assertEquals(merge("a: a", "b: b"), "a: a\nb: b\n");
 });
 

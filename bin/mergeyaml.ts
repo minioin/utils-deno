@@ -1,4 +1,4 @@
-import { merge } from "/lib/mergeyaml.ts";
+import { merge } from "@/lib/mergeyaml.ts";
 
 async function main() {
   const contents = await Promise.all(

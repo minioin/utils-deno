@@ -1,6 +1,6 @@
 {
   "imports": {
-    "/": "./",
+    "@/": "./",
     "download": "https://deno.land/x/download/mod.ts",
     "denomander": "https://deno.land/x/denomander/mod.ts",
     "encoding/": "https://deno.land/std@0.105.0/encoding/",
