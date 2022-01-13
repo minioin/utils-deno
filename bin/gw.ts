@@ -2,7 +2,7 @@ import { dirname, join, normalize, parse, resolve } from "path/mod.ts";
 
 const GRADLEW = "gradlew";
 
-function generatePaths(cwd: string) {
+function generatePaths(cwd: string): Array<string> {
   cwd = resolve(cwd);
   const { root } = parse(cwd);
   const paths = [];
@@ -18,9 +18,12 @@ function generatePaths(cwd: string) {
 
 async function main() {
   try {
-    const [path, _statinfo] = await Promise.any(
-      generatePaths(".").map(async (path) => [path, await Deno.stat(path)]),
+    const generatedPaths: Array<string> = generatePaths(".");
+    // FIXME: this can sometimes select upper directory instead of lower one.
+    const {path } = await Promise.any(
+      generatedPaths.map(async (path) => { return {path, stat: await Deno.stat(path)}}),
     );
+    console.log(path)
     const basedir = dirname(path);
     const exe = join(basedir, GRADLEW);
     await execute(exe, ".", Deno.args);
