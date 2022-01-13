@@ -20,10 +20,12 @@ async function main() {
   try {
     const generatedPaths: Array<string> = generatePaths(".");
     // FIXME: this can sometimes select upper directory instead of lower one.
-    const {path } = await Promise.any(
-      generatedPaths.map(async (path) => { return {path, stat: await Deno.stat(path)}}),
+    const { path } = await Promise.any(
+      generatedPaths.map(async (path) => {
+        return { path, stat: await Deno.stat(path) };
+      }),
     );
-    console.log(path)
+    console.log(path);
     const basedir = dirname(path);
     const exe = join(basedir, GRADLEW);
     await execute(exe, ".", Deno.args);
