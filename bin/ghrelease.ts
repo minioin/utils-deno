@@ -1,6 +1,6 @@
 import { download } from "download";
-import { emptyDir, ensureDir } from "fs/mod.ts";
-import Fuse from "fuse";
+import { emptyDir, ensureDir } from "std/fs/mod.ts";
+import Fuse from "npm:fuse";
 
 const home = Deno.env.get("HOME");
 

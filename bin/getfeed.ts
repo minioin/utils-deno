@@ -6,8 +6,8 @@ function gitHubUserFeed(p: URLPatternResult) {
 }
 
 function gitHubRepoFeed(p: URLPatternResult) {
-  const repo = `https://github.com/${p.pathname.groups?.username}/${p.pathname
-    .groups?.repo}`;
+  const repo =
+    `https://github.com/${p.pathname.groups?.username}/${p.pathname.groups?.repo}`;
   return {
     releases: repo + "/releases.atom",
     commits: repo + "/commits.atom",

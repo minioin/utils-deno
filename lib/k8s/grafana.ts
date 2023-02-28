@@ -17,8 +17,11 @@ export interface GrafanaDashboard {
 }
 
 export function grafanaDashboard(dashboard: Record<string, unknown>) {
-  const { gnetId, uid, title } =
-    (dashboard as { gnetId: number; uid: string; title: string });
+  const { gnetId, uid, title } = dashboard as {
+    gnetId: number;
+    uid: string;
+    title: string;
+  };
   const sanitizedTitle = slugify(title?.replaceAll(SEP, "") ?? "")
     .toLowerCase();
   const name = `${gnetId ?? uid ?? "0"}-${sanitizedTitle}`.toLowerCase();

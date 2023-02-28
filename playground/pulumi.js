@@ -1,5 +1,5 @@
-import * as k8s from "https://esm.sh/@pulumi/kubernetes";
-import * as kx from "https://esm.sh/@pulumi/kubernetesx";
+import * as k8s from "npm:@pulumi/kubernetes";
+import * as kx from "npm:@pulumi/kubernetesx";
 
 const provider = new k8s.Provider("render-yaml", {
   renderYamlToDirectory: "rendered",

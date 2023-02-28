@@ -171,6 +171,7 @@ export default class GetPocket {
       }&access_token=${this.access_token}&consumer_key=${this.consumer_key}`;
     const res = await fetch(url, { headers });
     if (res.status !== 200) {
+      console.log(await res.text())
       throw new Error("Error " + res.status);
     }
     const json = await res.json();

@@ -1,5 +1,3 @@
-import { writeAll } from "https://deno.land/std/io/util.ts";
-
 export async function downloadFile(
   url: string,
   path: string,
@@ -10,8 +8,5 @@ export async function downloadFile(
     throw new Error("Error downloading" + res.status);
   }
   const file = await Deno.open(path, { create: true, write: true });
-  for await (const chunk of res?.body) {
-    await writeAll(file, chunk);
-  }
-  file.close();
+  return res.body.pipe(file.writer);
 }

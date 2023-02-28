@@ -1,10 +1,8 @@
-import { parse, stringify } from "https://deno.land/std/encoding/yaml.ts";
+import { parse, stringify } from "std/encoding/yaml.ts";
 import { ld as _ } from "https://x.nest.land/deno-lodash@1.0.0/mod.ts";
 
-function mergeArrays(objValue: unknown, srcValue: unknown) {
-  if (_.isArray(objValue)) {
-    return objValue.concat(srcValue);
-  }
+function mergeArrays(objValue: Array<unknown>, srcValue: unknown) {
+  return objValue.concat(srcValue);
 }
 
 export function merge(...contents: Array<string>) {

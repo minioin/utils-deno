@@ -7,4 +7,6 @@ async function main() {
   console.log(merge(...contents));
 }
 
-main();
+if (import.meta.main) {
+  main();
+}
