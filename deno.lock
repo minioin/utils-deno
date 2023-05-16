@@ -290,6 +290,16 @@
     "https://denopkg.com/hashrock/deno-opn@master/opn.ts": "3803d12e07d56ff98e910b97283d061d634be256f16eb05265f587dda9b4c258",
     "https://f7oz6xcbryzf3ky2vfb3y7u7x3iq4rg2gyxfnq4s7nt54ofe6rpa.arweave.net/L92fXEGOMl2rGqlDvH6fvtEORNo2LlbDkvtn3jik9F4/lodash.ts": "120aac1bebaea6a82c386a031622a864ac2cda7dff49102ebd570fb809d1fa82",
     "https://f7oz6xcbryzf3ky2vfb3y7u7x3iq4rg2gyxfnq4s7nt54ofe6rpa.arweave.net/L92fXEGOMl2rGqlDvH6fvtEORNo2LlbDkvtn3jik9F4/mod.ts": "84fe1f89b9ba2e1fd1d672ed34983b07d84cf85694e1dcbd507e7e095c3988f9",
+    "https://raw.githubusercontent.com/hashrock/deno-opn/v2.0.0/Source/Exec.js": "15f41e822d111a626b3d48ddba76f227eadcc48ffe59419d91bda631e5aebffe",
+    "https://raw.githubusercontent.com/hashrock/deno-opn/v2.0.0/Source/Open.js": "d6c7368d86cba63b3673211cab048e4dfd620e4a4955fa8a33a9ee226afd5d7f",
+    "https://raw.githubusercontent.com/hashrock/deno-opn/v2.0.0/Source/Supported.js": "0b176d1c9129e5a397330ec052bd3fce95c97f4308ec338ece471adf59b4f596",
+    "https://raw.githubusercontent.com/hashrock/deno-opn/v2.0.0/Source/System/Darwin.js": "6465a3b49477958f6347c4c37c0b20a4486de6eaf3c43f1d8214dc5dddbb29a2",
+    "https://raw.githubusercontent.com/hashrock/deno-opn/v2.0.0/Source/System/Linux.js": "25a289d2f7a9d1668be46f6a78fcf20b6cd614fe9baa5e6a8c6780c3897945d1",
+    "https://raw.githubusercontent.com/hashrock/deno-opn/v2.0.0/Source/System/WSL.js": "6411a9662dd5b645eba6dcadb5753a36705d742d94c211c24b5e7c7ba2383fde",
+    "https://raw.githubusercontent.com/hashrock/deno-opn/v2.0.0/Source/System/Windows.js": "cb9e9552ec97edf468dc5fb0ef0ce82e06f93e31fd91baf12f9663e8e30e926b",
+    "https://raw.githubusercontent.com/hashrock/deno-opn/v2.0.0/Source/Wrapper/Library.ts": "844107450836b33777b28e60e899d40b28fedda3dcb1042ba34d22ce6f4c311b",
+    "https://raw.githubusercontent.com/hashrock/deno-opn/v2.0.0/Source/Wrapper/Options.ts": "c359c89862e16a6d59fc3c2ee4e355f539cc48cd3afa7fcc07a13f700ec28a75",
+    "https://raw.githubusercontent.com/hashrock/deno-opn/v2.0.0/mod.ts": "fa90e32fb6535051a37082f2dde5eaeb494de662a8454b4514411e3ace5e7212",
     "https://raw.githubusercontent.com/linux-china/dx/master/mod.ts": "70c7458c26e7ff8f01cbb2d11a3664d44bf26a383dea9c04d130bc935aaaef7e"
   },
   "npm": {

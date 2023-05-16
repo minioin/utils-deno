@@ -1,7 +1,7 @@
-import Denomander from "denomander";
-import { opn } from "opn";
+import Denomander from "https://deno.land/x/denomander/mod.ts";
+import { open as opn } from 'https://github.com/hashrock/deno-opn/raw/v2.0.0/mod.ts'
 import GetPocket, { GetResponse } from "../lib/getpocket.ts";
-import { link } from "x/cliffy/ansi/ansi_escapes.ts";
+import { link } from "https://deno.land/x/cliffy/ansi/ansi_escapes.ts";
 
 const consumerKey = Deno.env.get("POCKET_CONSUMER_KEY") || "";
 const accessToken = Deno.env.get("POCKET_ACCESS_TOKEN") || "";
@@ -44,7 +44,6 @@ program
       open,
       view,
       archive,
-      site,
       query,
       tag,
       all,
@@ -61,7 +60,6 @@ program
       open,
       view,
       archive,
-      domain: site,
       search: query,
       tag,
       state,
@@ -100,7 +98,6 @@ program
       open,
       view,
       archive,
-      site,
       contentType,
       tag,
       query,
