@@ -29,7 +29,7 @@ program
     "-t --target",
     "Installation target: default, multi-user, local-fs",
     (i) => i,
-    "default"
+    ["default"]
   )
   .option("--multi-user", "Install on multi-user target")
   .action(async ({ file }) => {
