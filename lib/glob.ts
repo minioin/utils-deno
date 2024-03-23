@@ -1,5 +1,4 @@
-import { isGlob } from "https://deno.land/std/path/glob.ts";
-
+import { isGlob } from "@std/path/is_glob";
 export function expand(i: string) {
   const result = [];
   // Does not support wildcard

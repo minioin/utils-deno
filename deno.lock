@@ -2,8 +2,14 @@
   "version": "3",
   "packages": {
     "specifiers": {
+      "jsr:@std/path@^0.220.1": "jsr:@std/path@0.220.1",
       "npm:@pulumi/kubernetes": "npm:@pulumi/kubernetes@3.24.1",
       "npm:@pulumi/kubernetesx": "npm:@pulumi/kubernetesx@0.1.6_@pulumi+kubernetes@3.24.1_@pulumi+pulumi@3.55.0__@opentelemetry+api@1.4.0"
+    },
+    "jsr": {
+      "@std/path@0.220.1": {
+        "integrity": "cc63c1b5e5192e2f718dc2f365a3514fffb26cc0380959bab0f8fb5988a52f0c"
+      }
     },
     "npm": {
       "@grpc/grpc-js@1.3.8": {
@@ -1390,5 +1396,10 @@
     "https://raw.githubusercontent.com/hashrock/deno-opn/v2.0.0/Source/Wrapper/Options.ts": "c359c89862e16a6d59fc3c2ee4e355f539cc48cd3afa7fcc07a13f700ec28a75",
     "https://raw.githubusercontent.com/hashrock/deno-opn/v2.0.0/mod.ts": "fa90e32fb6535051a37082f2dde5eaeb494de662a8454b4514411e3ace5e7212",
     "https://raw.githubusercontent.com/linux-china/dx/master/mod.ts": "70c7458c26e7ff8f01cbb2d11a3664d44bf26a383dea9c04d130bc935aaaef7e"
+  },
+  "workspace": {
+    "dependencies": [
+      "jsr:@std/path@^0.220.1"
+    ]
   }
 }

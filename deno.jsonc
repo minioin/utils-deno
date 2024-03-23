@@ -1,34 +1,43 @@
 {
   "compilerOptions": {
     "allowJs": false,
-    "lib": ["deno.window"],
+    "lib": [
+      "deno.window"
+    ],
     "strict": true
   },
   "imports": {
-    "download": "https://deno.land/x/download/mod.ts",
+    "@/": "./",
+    "@std/path": "jsr:@std/path@^0.220.1",
     "denomander": "https://deno.land/x/denomander/mod.ts",
+    "download": "https://deno.land/x/download/mod.ts",
+    "encoding/": "https://deno.land/std@0.120.0/encoding/",
+    "esm.sh/": "https://esm.sh/",
     "exec": "https://deno.land/x/exec/mod.ts",
     "fs/": "https://deno.land/std@0.105.0/fs/",
-    "lodash": "https://x.nest.land/deno-lodash@1.0.0/mod.ts",
-    "http/": "https://deno.land/std@0.105.0/http/",
-    "opn": "https://denopkg.com/hashrock/deno-opn/opn.ts",
-    "std/": "https://deno.land/std@0.178.0/",
-    "x/": "https://deno.land/x/",
-    "github/": "https://raw.githubusercontent.com/",
-    "@/": "./",
-    "encoding/": "https://deno.land/std@0.120.0/encoding/",
     "fuse": "https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.esm.js",
-    "path/": "https://deno.land/std@0.120.0/path/",
-    "stdx/": "https://deno.land/x/",
-    "esm.sh/": "https://esm.sh/",
+    "github.com/": "https://raw.githubusercontent.com/",
+    "github/": "https://raw.githubusercontent.com/",
+    "http/": "https://deno.land/std@0.105.0/http/",
     "jspm.io/": "https://dev.jspm.io/",
-    "github.com/": "https://raw.githubusercontent.com/"
+    "lodash": "https://x.nest.land/deno-lodash@1.0.0/mod.ts",
+    "opn": "https://denopkg.com/hashrock/deno-opn/opn.ts",
+    "path/": "https://deno.land/std@0.120.0/path/",
+    "std/": "https://deno.land/std@0.178.0/",
+    "stdx/": "https://deno.land/x/",
+    "x/": "https://deno.land/x/"
   },
   "lint": {
     "rules": {
-      "tags": ["recommended"],
-      "include": ["ban-untagged-todo"],
-      "exclude": ["no-unused-vars"]
+      "tags": [
+        "recommended"
+      ],
+      "include": [
+        "ban-untagged-todo"
+      ],
+      "exclude": [
+        "no-unused-vars"
+      ]
     }
   },
   "tasks": {
@@ -38,7 +47,9 @@
   "fmt": {
     "files": {
       "include": [],
-      "exclude": ["src/testdata/"]
+      "exclude": [
+        "src/testdata/"
+      ]
     },
     "options": {
       "lineWidth": 80,

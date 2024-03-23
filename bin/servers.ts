@@ -1,8 +1,8 @@
 import Denomander from "denomander";
 import { exec, OutputMode } from "exec";
-import { fromCSV } from "@/lib/config.ts";
 import { isIP } from "https://deno.land/x/isIP/mod.ts";
-import { expand as expandGlob } from "@/lib/glob.ts";
+import { fromCSV } from "../lib/config.ts";
+import { expand as expandGlob } from "../lib/glob.ts";
 
 const sshConfig =
   "-o StrictHostKeyChecking=no -o BatchMode=yes -o ConnectTimeout=5";
